@@ -17,63 +17,63 @@
 
 struct coroutine;
 
-// Ğ­³Ìµ÷¶ÈÆ÷
+// åç¨‹è°ƒåº¦å™¨
 struct schedule {
 	char stack[STACK_SIZE];
-	ucontext_t main;        // ÕıÔÚrunningµÄĞ­³ÌÔÚÖ´ĞĞÍêºóĞèÇĞ»»µ½µÄÉÏÏÂÎÄ£¬ÓÉÓÚÊÇ·Ç¶Ô³ÆĞ­³Ì£¬ËùÒÔ¸ÃÉÏÏÂÎÄÓÃÀ´½Ó¹ÜĞ­³Ì½áÊøºóµÄ³ÌĞò¿ØÖÆÈ¨
-	int nco;                // µ÷¶ÈÆ÷ÖĞÒÑ±£´æµÄĞ­³ÌÊıÁ¿
-	int cap;                // µ÷¶ÈÆ÷ÖĞĞ­³ÌµÄ×î´óÈİÁ¿
-	int running;            // µ÷¶ÈÆ÷ÖĞÕıÔÚrunningµÄĞ­³Ìid
-	struct coroutine **co;  // Á¬ĞøÄÚ´æ¿Õ¼ä£¬ÓÃÓÚ´æ´¢ËùÓĞĞ­³ÌÈÎÎñ
+	ucontext_t main;        // æ­£åœ¨runningçš„åç¨‹åœ¨æ‰§è¡Œå®Œåéœ€åˆ‡æ¢åˆ°çš„ä¸Šä¸‹æ–‡ï¼Œç”±äºæ˜¯éå¯¹ç§°åç¨‹ï¼Œæ‰€ä»¥è¯¥ä¸Šä¸‹æ–‡ç”¨æ¥æ¥ç®¡åç¨‹ç»“æŸåçš„ç¨‹åºæ§åˆ¶æƒ
+	int nco;                // è°ƒåº¦å™¨ä¸­å·²ä¿å­˜çš„åç¨‹æ•°é‡
+	int cap;                // è°ƒåº¦å™¨ä¸­åç¨‹çš„æœ€å¤§å®¹é‡
+	int running;            // è°ƒåº¦å™¨ä¸­æ­£åœ¨runningçš„åç¨‹id
+	struct coroutine **co;  // è¿ç»­å†…å­˜ç©ºé—´ï¼Œç”¨äºå­˜å‚¨æ‰€æœ‰åç¨‹ä»»åŠ¡
 };
 
-// Ğ­³ÌÈÎÎñÀàĞÍ
+// åç¨‹ä»»åŠ¡ç±»å‹
 struct coroutine {
-	coroutine_func func;    // Ğ­³Ìº¯Êı
-	void *ud;               // Ğ­³Ìº¯ÊıµÄ²ÎÊı(ÓÃ»§Êı¾İ)
-	ucontext_t ctx;         // Ğ­³ÌÉÏÏÂÎÄ
-	struct schedule * sch;  // Ğ­³ÌËùÊôµÄµ÷¶ÈÆ÷
-	// ptrdiff_t¶¨ÒåÔÚstddef.h(cstddef)ÖĞ£¬Í¨³£±»¶¨ÒåÎªlong intÀàĞÍ£¬Í¨³£ÓÃÀ´±£´æÁ½¸öÖ¸Õë¼õ·¨²Ù×÷µÄ½á¹û.
-	ptrdiff_t cap;          // Ğ­³ÌÕ»µÄ×î´óÈİÁ¿
-	ptrdiff_t size;         // Ğ­³ÌÕ»µÄµ±Ç°ÈİÁ¿
-	int status;             // Ğ­³Ì×´Ì¬(COROUTINE_DEAD/COROUTINE_READY/COROUTINE_RUNNING/COROUTINE_SUSPEND)
-	char *stack;            // Ğ­³ÌÕ»
+	coroutine_func func;    // åç¨‹å‡½æ•°
+	void *ud;               // åç¨‹å‡½æ•°çš„å‚æ•°(ç”¨æˆ·æ•°æ®)
+	ucontext_t ctx;         // åç¨‹ä¸Šä¸‹æ–‡
+	struct schedule * sch;  // åç¨‹æ‰€å±çš„è°ƒåº¦å™¨
+	// ptrdiff_tå®šä¹‰åœ¨stddef.h(cstddef)ä¸­ï¼Œé€šå¸¸è¢«å®šä¹‰ä¸ºlong intç±»å‹ï¼Œé€šå¸¸ç”¨æ¥ä¿å­˜ä¸¤ä¸ªæŒ‡é’ˆå‡æ³•æ“ä½œçš„ç»“æœ.
+	ptrdiff_t cap;          // åç¨‹æ ˆçš„æœ€å¤§å®¹é‡
+	ptrdiff_t size;         // åç¨‹æ ˆçš„å½“å‰å®¹é‡
+	int status;             // åç¨‹çŠ¶æ€(COROUTINE_DEAD/COROUTINE_READY/COROUTINE_RUNNING/COROUTINE_SUSPEND)
+	char *stack;            // åç¨‹æ ˆ
 };
 
-// ´´½¨Ğ­³ÌÈÎÎñ(·ÖÅäÄÚ´æ¿Õ¼ä)²¢³õÊ¼»¯
+// åˆ›å»ºåç¨‹ä»»åŠ¡(åˆ†é…å†…å­˜ç©ºé—´)å¹¶åˆå§‹åŒ–
 struct coroutine * 
 _co_new(struct schedule *S , coroutine_func func, void *ud) {
 	struct coroutine * co = malloc(sizeof(*co));
-	co->func = func;                // ³õÊ¼»¯Ğ­³Ìº¯Êı
-	co->ud = ud;                    // ³õÊ¼»¯ÓÃ»§Êı¾İ
-	co->sch = S;                    // ³õÊ¼»¯Ğ­³ÌËùÊôµÄµ÷¶ÈÆ÷
-	co->cap = 0;                    // ³õÊ¼»¯Ğ­³ÌÕ»µÄ×î´óÈİÁ¿
-	co->size = 0;                   // ³õÊ¼»¯Ğ­³ÌÕ»µÄµ±Ç°ÈİÁ¿
-	co->status = COROUTINE_READY;   // ³õÊ¼»¯Ğ­³Ì×´Ì¬
-	co->stack = NULL;               // ³õÊ¼»¯Ğ­³ÌÕ»
+	co->func = func;                // åˆå§‹åŒ–åç¨‹å‡½æ•°
+	co->ud = ud;                    // åˆå§‹åŒ–ç”¨æˆ·æ•°æ®
+	co->sch = S;                    // åˆå§‹åŒ–åç¨‹æ‰€å±çš„è°ƒåº¦å™¨
+	co->cap = 0;                    // åˆå§‹åŒ–åç¨‹æ ˆçš„æœ€å¤§å®¹é‡
+	co->size = 0;                   // åˆå§‹åŒ–åç¨‹æ ˆçš„å½“å‰å®¹é‡
+	co->status = COROUTINE_READY;   // åˆå§‹åŒ–åç¨‹çŠ¶æ€
+	co->stack = NULL;               // åˆå§‹åŒ–åç¨‹æ ˆ
 	return co;
 }
 
-// Ïú»ÙĞ­³ÌÈÎÎñ(ÊÍ·ÅÄÚ´æ¿Õ¼ä)
+// é”€æ¯åç¨‹ä»»åŠ¡(é‡Šæ”¾å†…å­˜ç©ºé—´)
 void
 _co_delete(struct coroutine *co) {
 	free(co->stack);
 	free(co);
 }
 
-// ´´½¨Ğ­³Ìµ÷¶ÈÆ÷schedule
+// åˆ›å»ºåç¨‹è°ƒåº¦å™¨schedule
 struct schedule * 
 coroutine_open(void) {
-	struct schedule *S = malloc(sizeof(*S));              // ´Ó¶ÑÉÏÎªµ÷¶ÈÆ÷·ÖÅäÄÚ´æ¿Õ¼ä
-	S->nco = 0;                                           // ³õÊ¼»¯µ÷¶ÈÆ÷µÄµ±Ç°Ğ­³ÌÊıÁ¿
-	S->cap = DEFAULT_COROUTINE;                           // ³õÊ¼»¯µ÷¶ÈÆ÷µÄ×î´óĞ­³ÌÊıÁ¿
+	struct schedule *S = malloc(sizeof(*S));              // ä»å †ä¸Šä¸ºè°ƒåº¦å™¨åˆ†é…å†…å­˜ç©ºé—´
+	S->nco = 0;                                           // åˆå§‹åŒ–è°ƒåº¦å™¨çš„å½“å‰åç¨‹æ•°é‡
+	S->cap = DEFAULT_COROUTINE;                           // åˆå§‹åŒ–è°ƒåº¦å™¨çš„æœ€å¤§åç¨‹æ•°é‡
 	S->running = -1;
-	S->co = malloc(sizeof(struct coroutine *) * S->cap);  // Îªµ÷¶ÈÆ÷ÖĞµÄĞ­³Ì·ÖÅä´æ´¢¿Õ¼ä
+	S->co = malloc(sizeof(struct coroutine *) * S->cap);  // ä¸ºè°ƒåº¦å™¨ä¸­çš„åç¨‹åˆ†é…å­˜å‚¨ç©ºé—´
 	memset(S->co, 0, sizeof(struct coroutine *) * S->cap);
 	return S;
 }
 
-// Ïú»ÙĞ­³Ìµ÷¶ÈÆ÷schedule
+// é”€æ¯åç¨‹è°ƒåº¦å™¨schedule
 void 
 coroutine_close(struct schedule *S) {
 	int i;
@@ -88,15 +88,15 @@ coroutine_close(struct schedule *S) {
 	free(S);
 }
 
-// ´´½¨Ğ­³ÌÈÎÎñ¡¢²¢½«Æä¼ÓÈëµ÷¶ÈÆ÷ÖĞ
+// åˆ›å»ºåç¨‹ä»»åŠ¡ã€å¹¶å°†å…¶åŠ å…¥è°ƒåº¦å™¨ä¸­
 int 
 coroutine_new(struct schedule *S, coroutine_func func, void *ud) {
-	// ´´½¨Ğ­³ÌÈÎÎñ(·ÖÅäÄÚ´æ¿Õ¼ä)²¢³õÊ¼»¯
+	// åˆ›å»ºåç¨‹ä»»åŠ¡(åˆ†é…å†…å­˜ç©ºé—´)å¹¶åˆå§‹åŒ–
 	struct coroutine *co = _co_new(S, func , ud);
 	
-	// ½«Ğ­³ÌÈÎÎñco¼ÓÈëµ÷¶ÈÆ÷S,²¢·µ»Ø¸ÃĞ­³ÌÈÎÎñµÄid
+	// å°†åç¨‹ä»»åŠ¡coåŠ å…¥è°ƒåº¦å™¨S,å¹¶è¿”å›è¯¥åç¨‹ä»»åŠ¡çš„id
 	if (S->nco >= S->cap) {
-		// µ÷Õûµ÷¶ÈÆ÷SÖĞĞ­³ÌµÄ×î´óÈİÁ¿,È»ºó½«Ğ­³ÌÈÎÎñco¼ÓÈëµ÷¶ÈÆ÷S,²¢·µ»Ø¸ÃĞ­³ÌÈÎÎñµÄid
+		// è°ƒæ•´è°ƒåº¦å™¨Sä¸­åç¨‹çš„æœ€å¤§å®¹é‡,ç„¶åå°†åç¨‹ä»»åŠ¡coåŠ å…¥è°ƒåº¦å™¨S,å¹¶è¿”å›è¯¥åç¨‹ä»»åŠ¡çš„id
 		int id = S->cap;
 		S->co = realloc(S->co, S->cap * 2 * sizeof(struct coroutine *));
 		memset(S->co + S->cap , 0 , sizeof(struct coroutine *) * S->cap);
@@ -105,7 +105,7 @@ coroutine_new(struct schedule *S, coroutine_func func, void *ud) {
 		++S->nco;
 		return id;
 	} else {
-		// ½«Ğ­³ÌÈÎÎñco¼ÓÈëµ÷¶ÈÆ÷S,²¢·µ»Ø¸ÃĞ­³ÌÈÎÎñµÄid
+		// å°†åç¨‹ä»»åŠ¡coåŠ å…¥è°ƒåº¦å™¨S,å¹¶è¿”å›è¯¥åç¨‹ä»»åŠ¡çš„id
 		int i;
 		for (i=0;i<S->cap;i++) {
 			int id = (i+S->nco) % S->cap;
@@ -120,7 +120,7 @@ coroutine_new(struct schedule *S, coroutine_func func, void *ud) {
 	return -1;
 }
 
-// ËùÓĞĞÂĞ­³ÌµÚÒ»´ÎÖ´ĞĞÊ±µÄÈë¿Úº¯Êı(ÆäÖĞÖ´ĞĞĞ­³Ì,²¢´¦ÀíÉÆºó¹¤×÷µÈ)
+// æ‰€æœ‰æ–°åç¨‹ç¬¬ä¸€æ¬¡æ‰§è¡Œæ—¶çš„å…¥å£å‡½æ•°(å…¶ä¸­æ‰§è¡Œåç¨‹,å¹¶å¤„ç†å–„åå·¥ä½œç­‰)
 static void
 mainfunc(uint32_t low32, uint32_t hi32) {
 	uintptr_t ptr = (uintptr_t)low32 | ((uintptr_t)hi32 << 32);
@@ -134,7 +134,7 @@ mainfunc(uint32_t low32, uint32_t hi32) {
 	S->running = -1;
 }
 
-// »Ö¸´Ğ­³ÌºÅÎªidµÄĞ­³ÌÈÎÎñ
+// æ¢å¤åç¨‹å·ä¸ºidçš„åç¨‹ä»»åŠ¡
 void 
 coroutine_resume(struct schedule * S, int id) {
 	assert(S->running == -1);
@@ -145,58 +145,58 @@ coroutine_resume(struct schedule * S, int id) {
 	int status = C->status;
 	switch(status) {
 	case COROUTINE_READY:
-		getcontext(&C->ctx);                    // »ñÈ¡³ÌĞòµ±Ç°ÉÏÏÂÎÄ
-		C->ctx.uc_stack.ss_sp = S->stack;       // ÉèÖÃÉÏÏÂÎÄC->ctxµÄÕ»
-		C->ctx.uc_stack.ss_size = STACK_SIZE;   // ÉèÖÃÉÏÏÂÎÄC->ctxµÄÕ»ÈİÁ¿
-		C->ctx.uc_link = &S->main;              // ÉèÖÃÉÏÏÂÎÄC->ctxÖ´ĞĞÍêºó»Ö¸´µ½S->mainÉÏÏÂÎÄ, ·ñÔòµ±Ç°Ïß³ÌÒòÃ»ÓĞÉÏÏÂÎÄ¿ÉÖ´ĞĞ¶øÍË³ö
+		getcontext(&C->ctx);                    // è·å–ç¨‹åºå½“å‰ä¸Šä¸‹æ–‡
+		C->ctx.uc_stack.ss_sp = S->stack;       // è®¾ç½®ä¸Šä¸‹æ–‡C->ctxçš„æ ˆ
+		C->ctx.uc_stack.ss_size = STACK_SIZE;   // è®¾ç½®ä¸Šä¸‹æ–‡C->ctxçš„æ ˆå®¹é‡
+		C->ctx.uc_link = &S->main;              // è®¾ç½®ä¸Šä¸‹æ–‡C->ctxæ‰§è¡Œå®Œåæ¢å¤åˆ°S->mainä¸Šä¸‹æ–‡, å¦åˆ™å½“å‰çº¿ç¨‹å› æ²¡æœ‰ä¸Šä¸‹æ–‡å¯æ‰§è¡Œè€Œé€€å‡º
 		S->running = id;
 		C->status = COROUTINE_RUNNING;
 		uintptr_t ptr = (uintptr_t)S;
-		//µÍ°æ±¾glibcÊµÏÖÎÊÌâ²»Ö§³Ö64bitÖ¸Õë£¬ËùÒÔÍ¨¹ı2¸ö32Î»int´«µİSµÄÖ¸Õë
-		makecontext(&C->ctx, (void (*)(void)) mainfunc, 2, (uint32_t)ptr, (uint32_t)(ptr>>32)); // ĞŞ¸ÄÉÏÏÂÎÄC->ctx, ĞÂµÄÉÏÏÂÎÄÖĞÖ´ĞĞº¯Êımainfunc
-		swapcontext(&S->main, &C->ctx);         // ±£³Öµ±Ç°ÉÏÏÂÎÄµ½S->main, ÇĞ»»µ±Ç°ÉÏÏÂÎÄÎªC->ctx
+		//ä½ç‰ˆæœ¬glibcå®ç°é—®é¢˜ä¸æ”¯æŒ64bitæŒ‡é’ˆï¼Œæ‰€ä»¥é€šè¿‡2ä¸ª32ä½intä¼ é€’Sçš„æŒ‡é’ˆ
+		makecontext(&C->ctx, (void (*)(void)) mainfunc, 2, (uint32_t)ptr, (uint32_t)(ptr>>32)); // ä¿®æ”¹ä¸Šä¸‹æ–‡C->ctx, æ–°çš„ä¸Šä¸‹æ–‡ä¸­æ‰§è¡Œå‡½æ•°mainfunc
+		swapcontext(&S->main, &C->ctx);         // ä¿æŒå½“å‰ä¸Šä¸‹æ–‡åˆ°S->main, åˆ‡æ¢å½“å‰ä¸Šä¸‹æ–‡ä¸ºC->ctx
 		break;
 	case COROUTINE_SUSPEND:
-		memcpy(S->stack + STACK_SIZE - C->size, C->stack, C->size);  // ¿½±´Ğ­³ÌÕ»C->stackµ½S->stack
-		S->running = id;                       // ÉèÖÃµ±Ç°ÔËĞĞµÄĞ­³Ìid
-		C->status = COROUTINE_RUNNING;         // ĞŞ¸ÄĞ­³ÌCµÄ×´Ì¬
-		swapcontext(&S->main, &C->ctx);        // ±£´æµ±Ç°ÉÏÏÂÎÄµ½S->main, ÇĞ»»µ±Ç°ÉÏÏÂÎÄÎªC->ctx
+		memcpy(S->stack + STACK_SIZE - C->size, C->stack, C->size);  // æ‹·è´åç¨‹æ ˆC->stackåˆ°S->stack
+		S->running = id;                       // è®¾ç½®å½“å‰è¿è¡Œçš„åç¨‹id
+		C->status = COROUTINE_RUNNING;         // ä¿®æ”¹åç¨‹Cçš„çŠ¶æ€
+		swapcontext(&S->main, &C->ctx);        // ä¿å­˜å½“å‰ä¸Šä¸‹æ–‡åˆ°S->main, åˆ‡æ¢å½“å‰ä¸Šä¸‹æ–‡ä¸ºC->ctx
 		break;
 	default:
 		assert(0);
 	}
 }
 
-// ±£´æĞ­³ÌÕ»
+// ä¿å­˜åç¨‹æ ˆ
 static void
 _save_stack(struct coroutine *C, char *top) {
 	char dummy = 0;
 	assert(top - &dummy <= STACK_SIZE);
 	if (C->cap < top - &dummy) {
-		// ÎªĞ­³ÌÕ»·ÖÅäÄÚ´æ¿Õ¼ä
+		// ä¸ºåç¨‹æ ˆåˆ†é…å†…å­˜ç©ºé—´
 		free(C->stack);
 		C->cap = top-&dummy;
 		C->stack = malloc(C->cap);
 	}
 	
 	C->size = top - &dummy;
-	memcpy(C->stack, &dummy, C->size); // dummyÖ¸Ïò±¾Ğ­³ÌµÄÕ»µ×£¬[top=>dummy]Ö®¼äÎªÊ¹ÓÃµÄÕ»¿Õ¼ä¡£
+	memcpy(C->stack, &dummy, C->size); // dummyæŒ‡å‘æœ¬åç¨‹çš„æ ˆåº•ï¼Œ[top=>dummy]ä¹‹é—´ä¸ºä½¿ç”¨çš„æ ˆç©ºé—´ã€‚
 }
 
-// ±£´æÉÏÏÂÎÄºóÖĞ¶Ïµ±Ç°Ğ­³ÌµÄÖ´ĞĞ,È»ºóÓÉµ÷¶ÈÆ÷ÖĞµÄmainÉÏÏÂÎÄ½Ó¹Ü³ÌĞòÖ´ĞĞÈ¨
+// ä¿å­˜ä¸Šä¸‹æ–‡åä¸­æ–­å½“å‰åç¨‹çš„æ‰§è¡Œ,ç„¶åç”±è°ƒåº¦å™¨ä¸­çš„mainä¸Šä¸‹æ–‡æ¥ç®¡ç¨‹åºæ‰§è¡Œæƒ
 void
 coroutine_yield(struct schedule * S) {
 	int id = S->running;
 	assert(id >= 0);
 	struct coroutine * C = S->co[id];
 	assert((char *)&C > S->stack);
-	_save_stack(C,S->stack + STACK_SIZE);   // ±£´æĞ­³ÌÕ»
-	C->status = COROUTINE_SUSPEND;          // ĞŞ¸ÄĞ­³Ì×´Ì¬
-	S->running = -1;                        // ĞŞ¸Äµ±Ç°Ö´ĞĞµÄĞ­³ÌidÎª-1
-	swapcontext(&C->ctx , &S->main);        // ±£´æµ±Ç°Ğ­³ÌµÄÉÏÏÂÎÄµ½C->ctx, ÇĞ»»µ±Ç°ÉÏÏÂÎÄµ½S->main
+	_save_stack(C,S->stack + STACK_SIZE);   // ä¿å­˜åç¨‹æ ˆ
+	C->status = COROUTINE_SUSPEND;          // ä¿®æ”¹åç¨‹çŠ¶æ€
+	S->running = -1;                        // ä¿®æ”¹å½“å‰æ‰§è¡Œçš„åç¨‹idä¸º-1
+	swapcontext(&C->ctx , &S->main);        // ä¿å­˜å½“å‰åç¨‹çš„ä¸Šä¸‹æ–‡åˆ°C->ctx, åˆ‡æ¢å½“å‰ä¸Šä¸‹æ–‡åˆ°S->main
 }
 
-// ¸ù¾İĞ­³ÌÈÎÎñid·µ»ØĞ­³ÌµÄµ±Ç°×´Ì¬
+// æ ¹æ®åç¨‹ä»»åŠ¡idè¿”å›åç¨‹çš„å½“å‰çŠ¶æ€
 int 
 coroutine_status(struct schedule * S, int id) {
 	assert(id>=0 && id < S->cap);
@@ -206,7 +206,7 @@ coroutine_status(struct schedule * S, int id) {
 	return S->co[id]->status;
 }
 
-// ·µ»Øµ÷¶ÈÆ÷SÖĞÕıÔÚrunningµÄĞ­³ÌÈÎÎñid
+// è¿”å›è°ƒåº¦å™¨Sä¸­æ­£åœ¨runningçš„åç¨‹ä»»åŠ¡id
 int 
 coroutine_running(struct schedule * S) {
 	return S->running;

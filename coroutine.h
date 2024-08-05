@@ -6,17 +6,17 @@
 #define COROUTINE_RUNNING 2
 #define COROUTINE_SUSPEND 3
 
-struct schedule;  // Ç°ÖÃÉùÃ÷Ğ­³Ìµ÷¶ÈÆ÷struct scheduleÀàĞÍ
+struct schedule;  // å‰ç½®å£°æ˜åç¨‹è°ƒåº¦å™¨struct scheduleç±»å‹
 
-typedef void (*coroutine_func)(struct schedule *, void *ud); // ÉùÃ÷Ò»¸öº¯ÊıÖ¸ÕëÀàĞÍ
+typedef void (*coroutine_func)(struct schedule *, void *ud); // å£°æ˜ä¸€ä¸ªå‡½æ•°æŒ‡é’ˆç±»å‹
 
-struct schedule * coroutine_open(void);   // ´´½¨Ğ­³Ìµ÷¶ÈÆ÷
-void coroutine_close(struct schedule *);  // ¹Ø±ÕĞ­³Ìµ÷¶ÈÆ÷
+struct schedule * coroutine_open(void);   // åˆ›å»ºåç¨‹è°ƒåº¦å™¨
+void coroutine_close(struct schedule *);  // å…³é—­åç¨‹è°ƒåº¦å™¨
 
-int coroutine_new(struct schedule *, coroutine_func, void *ud);   // ´´½¨Ğ­³ÌÈÎÎñ,½«Æä¼ÓÈëµ÷¶ÈÆ÷ÖĞ
-void coroutine_resume(struct schedule *, int id);                 // »Ö¸´Ğ­³ÌºÅÎªidµÄĞ­³ÌÈÎÎñ
-int coroutine_status(struct schedule *, int id);                  // ¸ù¾İĞ­³ÌÈÎÎñid·µ»ØĞ­³ÌµÄµ±Ç°×´Ì¬
-int coroutine_running(struct schedule *);                         // ·µ»Øµ÷¶ÈÆ÷SÖĞÕıÔÚrunningµÄĞ­³ÌÈÎÎñid
-void coroutine_yield(struct schedule *);                          // ±£´æµ±Ç°ÉÏÏÂÎÄºóÖĞ¶Ïµ±Ç°Ğ­³ÌµÄÖ´ĞĞ
+int coroutine_new(struct schedule *, coroutine_func, void *ud);   // åˆ›å»ºåç¨‹ä»»åŠ¡,å°†å…¶åŠ å…¥è°ƒåº¦å™¨ä¸­
+void coroutine_resume(struct schedule *, int id);                 // æ¢å¤åç¨‹å·ä¸ºidçš„åç¨‹ä»»åŠ¡
+int coroutine_status(struct schedule *, int id);                  // æ ¹æ®åç¨‹ä»»åŠ¡idè¿”å›åç¨‹çš„å½“å‰çŠ¶æ€
+int coroutine_running(struct schedule *);                         // è¿”å›è°ƒåº¦å™¨Sä¸­æ­£åœ¨runningçš„åç¨‹ä»»åŠ¡id
+void coroutine_yield(struct schedule *);                          // ä¿å­˜å½“å‰ä¸Šä¸‹æ–‡åä¸­æ–­å½“å‰åç¨‹çš„æ‰§è¡Œ
 
 #endif
